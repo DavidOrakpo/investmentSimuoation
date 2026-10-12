@@ -1,0 +1,6 @@
+@investmentSimuoation_HostAddress = http://localhost:5140
+
+GET {{investmentSimuoation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
