@@ -1,6 +1,107 @@
 @investmentSimuoation_HostAddress = http://localhost:5140
 
-GET {{investmentSimuoation_HostAddress}}/weatherforecast/
+### 1. Get All Investment Products
+GET {{investmentSimuoation_HostAddress}}/api/products
 Accept: application/json
 
-###
+### 2. Filter Products by Category
+GET {{investmentSimuoation_HostAddress}}/api/products?category=Government Bonds
+Accept: application/json
+
+### 3. Filter Products by Risk Level
+GET {{investmentSimuoation_HostAddress}}/api/products?riskLevel=Low
+Accept: application/json
+
+### 4. Search Products
+GET {{investmentSimuoation_HostAddress}}/api/products?search=energy
+Accept: application/json
+
+### 5. Simulate Empty State (returns [])
+GET {{investmentSimuoation_HostAddress}}/api/products?simulateEmpty=true
+Accept: application/json
+
+### 6. Simulate Error State (returns 500)
+GET {{investmentSimuoation_HostAddress}}/api/products?simulateError=true
+Accept: application/json
+
+### 7. Simulate Loading State (delays 2 seconds)
+GET {{investmentSimuoation_HostAddress}}/api/products?simulateDelayMs=2000
+Accept: application/json
+
+### 8. Get Product By ID (Success)
+GET {{investmentSimuoation_HostAddress}}/api/products/treasury-yield-30d
+Accept: application/json
+
+### 9. Get Product By ID (Not Found - 404)
+GET {{investmentSimuoation_HostAddress}}/api/products/invalid-id
+Accept: application/json
+
+### 10. Preview / Simulate Investment Calculation (Success)
+POST {{investmentSimuoation_HostAddress}}/api/investments/simulate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "productId": "treasury-yield-30d",
+  "amount": 1000.00
+}
+
+### 11. Preview Investment Calculation (Validation Error: Below Minimum $100)
+POST {{investmentSimuoation_HostAddress}}/api/investments/simulate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "productId": "treasury-yield-30d",
+  "amount": 25.00
+}
+
+### 12. Create New Investment (Success - 201 Created)
+POST {{investmentSimuoation_HostAddress}}/api/investments
+Content-Type: application/json
+Accept: application/json
+Idempotency-Key: test-req-client-001
+
+{
+  "productId": "treasury-yield-30d",
+  "amount": 1500.00,
+  "investorName": "John Flutter",
+  "fundingSource": "Savings Account",
+  "idempotencyKey": "test-req-client-001"
+}
+
+### 13. Create Investment with Duplicate Idempotency Key (Duplicate Prevention - 200 OK)
+POST {{investmentSimuoation_HostAddress}}/api/investments
+Content-Type: application/json
+Accept: application/json
+Idempotency-Key: test-req-client-001
+
+{
+  "productId": "treasury-yield-30d",
+  "amount": 1500.00,
+  "investorName": "John Flutter",
+  "fundingSource": "Savings Account",
+  "idempotencyKey": "test-req-client-001"
+}
+
+### 14. Create Investment (Validation Error: Below Minimum Amount)
+POST {{investmentSimuoation_HostAddress}}/api/investments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "productId": "fixed-deposit-90d",
+  "amount": 50.00
+}
+
+### 15. List All Created Investments (Portfolio)
+GET {{investmentSimuoation_HostAddress}}/api/investments
+Accept: application/json
+
+### 16. Get Investment by Reference Number
+GET {{investmentSimuoation_HostAddress}}/api/investments/INV-SAMPLE-001
+Accept: application/json
+
+### 17. Reset In-Memory Investments
+POST {{investmentSimuoation_HostAddress}}/api/investments/reset
+Accept: application/json

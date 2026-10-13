@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="investmentSimuoation.csproj" />
+  <Project Path="investmentSimuoation.Tests/investmentSimuoation.Tests.csproj" />
 </Solution>
