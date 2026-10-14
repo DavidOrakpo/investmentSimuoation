@@ -39,8 +39,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Note: Avoid enforcing HTTPS redirection in Development to allow seamless Flutter Android Emulator (http://10.0.2.2:5140)
-// and iOS simulator testing without self-signed SSL certificate trust issues.
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
